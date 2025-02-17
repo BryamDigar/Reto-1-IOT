@@ -72,8 +72,9 @@ Y los actuadores utilizados son los siguientes:
 
 El siguiente diagrama muestra el funcionamiento de la arquitectura planteada.
 
-<!-- TODO: Imagen 1 -->
-![Arquitectura planteada](Imagenes/Arquitectura.jpg)
+<p align="center">
+  <img src="Imagenes/Arquitectura.jpg" alt="Arquitectura planteada" style="width: 70%;">
+</p>
 
 ### Desarrollo teórico modular
 
@@ -91,8 +92,9 @@ El proceso inició con la simulación en **Wokwi**, una plataforma en línea que
 
 Para la fase de implementación, se replicó la estructura de cableado diseñada en la simulación como se observa en la siguiente figura: 
 
-<!-- TODO: Imagen 2 -->
-![Montaje completo del prototipo](Imagenes/Montaje.jpg)
+<p align="center">
+  <img src="Imagenes/Montaje.jpg" alt="Arquitectura planteada" style="width: 70%;">
+</p>
 
 Luego se cargó el código en el microcontrolador ESP32. Las pruebas comenzaron con la verificación de la pantalla LCD, asegurando que mostrara correctamente los datos y mensajes esperados. Posteriormente, se evaluó el comportamiento de los sensores, verificando que sus lecturas reflejaran con precisión los cambios en temperatura, llama, humedad, gases y humo. Finalmente, se evaluó el comportamiento de los actuadores, como los LED y el buzzer, verificando que respondieran de acuerdo con la lógica programada y la simulación previa.
 
@@ -154,8 +156,9 @@ Para el trabajo futuro, se propone la implementación de algoritmos de aprendiza
 
 ### Anexo C. Simulación del circuito
 
-<!-- TODO:  Imagen 3 -->
-![Simulación completa del prototipo](Imagenes/Simulacion.jpg)
+<p align="center">
+  <img src="Imagenes/Simulacion.jpg" alt="Arquitectura planteada" style="width: 40%;">
+</p>
 
 ### Anexo D. Documentación del codigo
 
