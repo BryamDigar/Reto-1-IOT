@@ -1,10 +1,9 @@
 # Sistema IoT para Detección de Incendios en los Cerros Orientales de Bogotá
 
-## Tabla de Contenidos
+## Estructura de la documentación
 1. [Resumen General](#resumen-general)
    1. [Motivación](#motivación)
    2. [Justificación](#justificación)
-   3. [Estructura de la documentación](#estructura-de-la-documentación)
 2. [Solución Propuesta](#solución-propuesta)
    1. [Restricciones de diseño](#restricciones-de-diseño)
    2. [Arquitectura](#arquitectura)
@@ -34,17 +33,6 @@ A lo largo de la historia los cerros orientales de Bogotá han sido una zona de 
 ### Justificación
 
 La implementación de un sistema de detección temprana de incendios, sin dependencia de redes de comunicación, garantiza una respuesta inmediata ante condiciones de riesgo, lo que resulta crucial en entornos naturales de difícil acceso y monitoreo continuo. La solución propuesta integra diversas tecnologías y sensores, proporcionando un desarrollo escalable y adaptable, capaz de evolucionar con futuras mejoras e implementaciones en otras regiones con necesidades similares.
-
-### Estructura de la documentación
-
-Este documento está organizado en secciones que cubren desde el diseño inicial hasta la implementación final del sistema, incluyendo pruebas y validaciones.
-
-1.	Resumen General, Motivación y Justificación.
-2.	**Solución Propuesta:** Detalle de restricciones de diseño, arquitectura del sistema, desarrollo modular, diagramas UML, esquemáticos de hardware y estándares aplicados.
-3.	**Configuración Experimental, Resultados y Análisis:** Descripción de pruebas realizadas, resultados obtenidos y análisis crítico.
-4.	**Autoevaluación del Protocolo de Pruebas:** Revisión del método de pruebas, logros y áreas de mejora.
-5.	**Conclusiones, Retos y Trabajo Futuro:** Reflexión sobre el desarrollo, desafíos enfrentados y propuestas de mejoras.
-6.	**Anexos:** Código fuente documentado, esquemáticos, material complementario y enlace al video demostrativo.
 
 ---
 
@@ -78,17 +66,31 @@ El siguiente diagrama muestra el funcionamiento de la arquitectura planteada.
 
 ### Desarrollo teórico modular
 
-<!-- TODO: Escribir Desarrollo teórico modular -->
+El sistema propuesto sigue una arquitectura modular dividida en cuatro componentes principales: inicialización del sistema, sensores, procesamiento y actuadores. El diagrama UML de actividades presentado a continuación ilustra el flujo de operación del sistema, se describe el proceso de adquisición de datos a través de los sensores, su análisis mediante la verificación de rangos y condiciones, y la posterior activación de alarmas y notificaciones en caso de condiciones de riesgo.  
 
+<p align="center">
+  <img src="Imagenes/Diagrama.jpg" alt="Arquitectura planteada" style="width: 60%;">
+</p>
 
 ### Estándares de diseño de ingeniería aplicadas
 
-<!-- TODO: Agregar Estándares de diseño de ingeniería aplicadas -->
+Seguimos los lineamientos de los siguientes estándares para la realización del reto: 
 
+* **ISO 7240-1:2014. Fire detection and alarm systems — Part 1:** General and definitions  Este estándar hace referencia a sistemas de detección y alarmas de incendios, requerimientos para su interconexión, instalación y pruebas. Además, menciona el funcionamiento esperado por este tipo de sistemas [3]. 
+
+* **ISO 25010. Calidad del producto software.** Hace referencia al grado de satisfacción que alcanza el producto de software al ser utilizado por el usuario aportando valor [4]. 
+
+<p align="center">
+  <img src="Imagenes/Calidad.jpg" alt="Arquitectura planteada" style="width: 70%;">
+</p>
+
+* **ISO 22320:2018. Security and resilience — Emergency management — Guidelines for incident management.**  Este estándar marca las pautas para el manejo de incidentes, así como la importancia de comunicar en caso de un incidente [5]. 
+
+---
 
 ## Configuración experimental
 
-El proceso inició con la simulación en **Wokwi**, una plataforma en línea que permite diseñar, programar y probar proyectos de electrónica. Este simulador es compatible con múltiples placas, sensores y actuadores, incluyendo Arduino, ESP32, STM32 y Raspberry Pi Pico [3]. En esta fase, se implementó el diseño inicial del sistema, asegurando que cumpliera con los requisitos establecidos. Se desarrolló y probó el código para el ESP32, verificando su correcta interacción con los sensores y actuadores simulados. Durante esta etapa, se evaluó el funcionamiento de cada componente, las conexiones y la lógica del sistema para garantizar su viabilidad antes del montaje físico.
+El proceso inició con la simulación en **Wokwi**, una plataforma en línea que permite diseñar, programar y probar proyectos de electrónica. Este simulador es compatible con múltiples placas, sensores y actuadores, incluyendo Arduino, ESP32, STM32 y Raspberry Pi Pico [6]. En esta fase, se implementó el diseño inicial del sistema, asegurando que cumpliera con los requisitos establecidos. Se desarrolló y probó el código para el ESP32, verificando su correcta interacción con los sensores y actuadores simulados. Durante esta etapa, se evaluó el funcionamiento de cada componente, las conexiones y la lógica del sistema para garantizar su viabilidad antes del montaje físico.
 
 Para la fase de implementación, se replicó la estructura de cableado diseñada en la simulación como se observa en la siguiente figura: 
 
@@ -101,6 +103,8 @@ Luego se cargó el código en el microcontrolador ESP32. Las pruebas comenzaron 
 ### Resultados y Análisis
 
 Tras realizar las pruebas de todos los sensores y los actuadores presentes en el sistema se consiguió el resultado esperado en casi todos los sectores del sistema, a excepción del led RGB, a pesar de ello se logró el objetivo propuesto por el reto, al construir un sistema que cumple los requisitos solicitados. Los videos encontrados en el anexo a este documento muestran el funcionamiento de los actuadores en respuesta a cambios en el ambiente y a la presencia de alguna llama, cabe resaltar que para la realización de las pruebas algunos de los márgenes de seguridad fueron cambiados ya que las condiciones ambientales que se esperan de en los cierros orientales de Bogotá son muy distintos de las condiciones que había en el laboratorio el día del montaje del sistema. 
+
+---
 
 ## Autoevaluación del Protocolo de Pruebas
 
@@ -117,12 +121,13 @@ Los resultados obtenidos confirmaron que todas las partes del sistema automátic
 
 Durante el desarrollo del reto surgieron diversos desafíos que afectaron el funcionamiento óptimo del prototipo.
 
-En la fase inicial del montaje físico, surgió un problema relacionado con la versión del microcontrolador ESP32. El equipo contaba con un ESP32 v1, mientras que la simulación y el diseño inicial se habían realizado utilizando un ESP32 v4. Esto generó incompatibilidades en cuanto a la configuración de los pines y sus funcionalidades, lo que dificultó la implementación directa del código y las conexiones planeadas. Como lo indica la documentación técnica, las diferentes versiones del ESP32 pueden variar en la disposición de pines y sus funcionalidades, por lo que es crucial verificar las especificaciones del hardware antes de implementar un proyecto [4]. Para solucionar el inconveniente, se modificaron algunas conexiones para ajustarse a las limitaciones de la versión que se tenía, redistribuyendo los sensores y actuadores en los pines compatibles. Luego, se adaptó el código inicial para utilizar los pines disponibles en el ESP v1, asegurando que las funcionalidades no se vieran afectadas, y por último se hicieron las pruebas necesarias para verificar que todo funcionara correctamente.
+En la fase inicial del montaje físico, surgió un problema relacionado con la versión del microcontrolador ESP32. El equipo contaba con un ESP32 v1, mientras que la simulación y el diseño inicial se habían realizado utilizando un ESP32 v4. Esto generó incompatibilidades en cuanto a la configuración de los pines y sus funcionalidades, lo que dificultó la implementación directa del código y las conexiones planeadas. Como lo indica la documentación técnica, las diferentes versiones del ESP32 pueden variar en la disposición de pines y sus funcionalidades, por lo que es crucial verificar las especificaciones del hardware antes de implementar un proyecto [7]. Para solucionar el inconveniente, se modificaron algunas conexiones para ajustarse a las limitaciones de la versión que se tenía, redistribuyendo los sensores y actuadores en los pines compatibles. Luego, se adaptó el código inicial para utilizar los pines disponibles en el ESP v1, asegurando que las funcionalidades no se vieran afectadas, y por último se hicieron las pruebas necesarias para verificar que todo funcionara correctamente.
 
-Por otro lado, se presentó un reto con el sensor de temperatura y humedad. Durante la simulación se utilizó el DHT22, pero el kit disponible incluía un DHT11. Aunque ambos sensores comparten la misma disposición de pines, lo que permitió realizar la conexión física sin mayores inconvenientes, durante las pruebas se observó que el sensor no mostraba ningún dato en el display. El equipo realizó un análisis de las conexiones y del código, y se detectó que el error residía en la configuración; el código estaba adaptado para el DHT22 y no se había modificado para el DHT11. Una vez actualizado el código, el sensor comenzó a funcionar correctamente. Es importante destacar que, aunque el DHT11 y el DHT22 utilizan la misma interfaz de conexión, difieren en aspectos críticos como el rango de medición, la precisión y la velocidad de respuesta [5].
+Por otro lado, se presentó un reto con el sensor de temperatura y humedad. Durante la simulación se utilizó el DHT22, pero el kit disponible incluía un DHT11. Aunque ambos sensores comparten la misma disposición de pines, lo que permitió realizar la conexión física sin mayores inconvenientes, durante las pruebas se observó que el sensor no mostraba ningún dato en el display. El equipo realizó un análisis de las conexiones y del código, y se detectó que el error residía en la configuración; el código estaba adaptado para el DHT22 y no se había modificado para el DHT11. Una vez actualizado el código, el sensor comenzó a funcionar correctamente. Es importante destacar que, aunque el DHT11 y el DHT22 utilizan la misma interfaz de conexión, difieren en aspectos críticos como el rango de medición, la precisión y la velocidad de respuesta [8].
 
 Otro reto que se presentó al momento de probar el montaje residió en el LED RGB, el cual en el tiempo que contamos no logramos solucionar, esto se debe a que en el simulador virtual de wokwi este Led RGB es de tipo cátodo, pero en el laboratorio solo contabamos con un Led RGB de tipo ánodo, lo cual provoco que este dejara de funcionar correctamente, esto a pesar de que intentamos modificar el código para corregir esta situación.
 
+---
 
 ## Conclusiones
 
@@ -133,6 +138,7 @@ La implementación práctica del reto validó la efectividad de la arquitectura 
 ### Trabajo Futuro
 Para el trabajo futuro, se propone la implementación de algoritmos de aprendizaje automático para mejorar la precisión en la detección de condiciones de riesgo, el desarrollo de una red de sensores distribuidos para ampliar el área de cobertura, y la integración de sistemas de energía renovable para mayor autonomía operativa. Estas mejoras permitirían expandir las capacidades del sistema actual y optimizar su funcionamiento en diferentes contextos de aplicación, contribuyendo así a una protección más efectiva de los cerros orientales y otros ecosistemas similares.
 
+---
 
 ## Anexos
 
@@ -356,13 +362,25 @@ void setRGB(int red, int green, int blue) {
 
 ```
 
+---
+
 ## Referencias
 
-[1]: J. M. A. L. King, "Challenge#1 Statement", Microsoft Teams, 17 de febrero de 2025. [En línea].  
-[2]: ISO/IEC/IEEE. (2011). "Systems and software engineering - Requirements engineering". ISO/IEC/IEEE 29148:2011.  
-[3]: "Welcome to Wokwi!" Wokwi Documentation, [Online]. Disponible: [https://docs.wokwi.com/](https://docs.wokwi.com/). [Accedido: 13-02-2025].  
-[4]: Espressif Systems, "ESP32 Series Datasheet," 2020. [En línea]. Disponible: [https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf). [Accedido: 12-02-2025].  
-[5]: Adafruit Industries, “DHT11 and DHT22: Temperature and Humidity Sensors,” 2025. [En línea]. Disponible: [https://learn.adafruit.com/dht](https://learn.adafruit.com/dht).  
+[1] J. M. A. L. King, "Challenge#1 Statement", Microsoft Teams, 17 de febrero de 2025. [En línea]. 
+
+[2] ISO/IEC/IEEE. (2011). "Systems and software engineering - Requirements engineering". ISO/IEC/IEEE 29148:2011. 
+
+[3] ISO 22320:2018. Security and resilience — Emergency management — Guidelines for incident management (2018). [En línea]. Disponible: https://www.iso.org/obp/ui/en/#iso:std:iso:22320:ed-2:v1:en [Accedido: Feb. 17, 2025]. 
+
+[4] ISO 25000. "ISO/IEC 25010". [En línea]. Disponible: https://iso25000.com/index.php/normas-iso-25000/iso-25010 [Accedido: Feb. 17, 2025]. 
+
+[5] ISO 7240-1:2014(en). Fire detection and alarm systems — Part 1: General and definitions (2014). [En línea]. Disponible: https://www.iso.org/obp/ui/en/#iso:std:iso:7240:-1:ed-3:v1:en [Accedido: Feb. 17, 2025]. 
+
+[6] "Welcome to Wokwi!" Wokwi Documentation, [Online]. Available: https://docs.wokwi.com/. [Accessed: 13-02-2025]. 
+
+[7] Espressif Systems, "ESP32 Series Datasheet," 2020. [En línea]. Disponible: https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf. [Accedido: Feb. 12, 2025]. 
+
+[8] Adafruit Industries, “DHT11 and DHT22: Temperature and Humidity Sensors,” 2025. [En línea]. Disponible: https://learn.adafruit.com/dht 
 
 
 ---
