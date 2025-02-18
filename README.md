@@ -166,6 +166,8 @@ Para el trabajo futuro, se propone la implementación de algoritmos de aprendiza
   <img src="Imagenes/Simulacion.jpg" alt="Arquitectura planteada" style="width: 40%;">
 </p>
 
+[Simulación Wokwi](https://wokwi.com/projects/422564181816132609)
+
 ### Anexo D. Documentación del codigo
 
 ```ino
@@ -175,34 +177,39 @@ Para el trabajo futuro, se propone la implementación de algoritmos de aprendiza
 #include <LiquidCrystal_I2C.h>
 #include <MQUnifiedsensor.h>
 
+// Definición de pines
 #define DHTPIN 4
 #define DHTTYPE DHT11
 #define LED_PIN 27
 #define BUZZER_PIN 26
 #define FLAME_PIN 25
 #define Board "ESP-32"
-#define Pin 34  // Usamos un pin ADC adecuado para el ESP32 v1
+#define Pin 34  // Pin ADC para el sensor de gas
 
-/***********************Software Related Macros************************************/
+// Configuración del sensor de gas MQ-2
 #define Type "MQ-2"
 #define Voltage_Resolution 3.3
 #define ADC_Bit_Resolution 12 
 #define RatioMQ2CleanAir 9.83
 
+// Definición de pines para LEDs RGB
 #define RED_PIN 5
 #define GREEN_PIN 18
 #define BLUE_PIN 19
 
+// Umbrales de temperatura y humedad
 #define TEMP_LOW 8.4
 #define TEMP_HIGH 13
 #define HUMI_LOW 75
 #define HUMI_HIGH 80
 #define FIRE_THRESHOLD LOW
 
+// Configuración del LCD I2C
 #define I2C_ADDR 0x27
 #define LCD_COLUMNS 16
 #define LCD_LINES 2
 
+// Inicialización de sensores y pantalla LCD
 DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal_I2C lcd(I2C_ADDR, LCD_COLUMNS, LCD_LINES);
 MQUnifiedsensor MQ2(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
@@ -211,19 +218,22 @@ int valor_gas = 0;
 void setup() {
   lcd.clear();
   Serial.begin(115200);
+  
+  // Configuración de pines de entrada/salida
   pinMode(LED_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(FLAME_PIN, INPUT);
-
   pinMode(RED_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(BLUE_PIN, OUTPUT);
 
+  // Inicialización del sensor de gas MQ-2
   MQ2.setRegressionMethod(1);
   MQ2.setA(36974); 
   MQ2.setB(-3.109);
   MQ2.init(); 
 
+  // Inicialización del LCD
   lcd.init();
   lcd.backlight();
   lcd.setCursor(4, 0);
@@ -233,6 +243,7 @@ void setup() {
   delay(1000);
   lcd.clear();
 
+  // Calibración del sensor MQ-2
   Serial.print("Calibrating please wait.");
   float calcR0 = 0;
   for(int i = 1; i <= 10; i++) {
@@ -250,9 +261,11 @@ void setup() {
 }
 
 void loop() {
+  // Lectura de temperatura y humedad
   float temp = dht.readTemperature();
   float humi = dht.readHumidity();
 
+  // Mostrar temperatura y humedad en LCD
   lcd.setCursor(0, 0);
   lcd.print("Temp: ");
   lcd.print(temp);
@@ -261,10 +274,11 @@ void loop() {
   lcd.setCursor(0, 1);
   lcd.print("Humi: ");
   lcd.print(humi);
-  Serial.println("humedad" + String(humi));
+  Serial.println("Humedad: " + String(humi));
   lcd.print(" %");
   delay(1000);
 
+  // Lectura del sensor de gas MQ-2
   MQ2.update();
   MQ2.readSensor();
   valor_gas = analogRead(Pin);
@@ -277,9 +291,10 @@ void loop() {
   delay(1000);
   lcd.clear();
 
-  if (digitalRead(FLAME_PIN) == LOW) {  // El sensor activa LOW en presencia de fuego
-    digitalWrite(LED_PIN, HIGH);  // Encender LED de alerta
-    tone(BUZZER_PIN, 1000);       // Activar buzzer
+  // Detección de fuego
+  if (digitalRead(FLAME_PIN) == LOW) {  // Sensor activa LOW si detecta fuego
+    digitalWrite(LED_PIN, HIGH);
+    tone(BUZZER_PIN, 1000);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("FUEGO");
@@ -289,8 +304,8 @@ void loop() {
     delay(1000);
     lcd.clear();
   } else {
-    digitalWrite(LED_PIN, LOW);  // Apagar LED
-    noTone(BUZZER_PIN);          // Apagar buzzer
+    digitalWrite(LED_PIN, LOW);
+    noTone(BUZZER_PIN);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("NO HAY");
@@ -301,6 +316,8 @@ void loop() {
     lcd.clear();
   }
   delay(100);
+
+  // Verificación de temperatura y control de LED RGB
   if(temp > TEMP_LOW && temp < TEMP_HIGH) {
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -342,6 +359,8 @@ void loop() {
     setRGB(0, 0, 255);
     lcd.clear();
   }
+
+  // Verificación de humedad
   if (humi < HUMI_LOW) {
     digitalWrite(LED_PIN, HIGH);
     lcd.clear();
@@ -354,6 +373,7 @@ void loop() {
   }
 }
 
+// Función para controlar el color del LED RGB
 void setRGB(int red, int green, int blue) {
   ledcWrite(0, 255 - red);
   ledcWrite(1, 255 - green);
